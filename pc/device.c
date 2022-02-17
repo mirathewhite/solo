@@ -133,7 +133,7 @@ void usbhid_init()
     }
     else
     {
-        fd = open("/dev/hidg0", O_RDWR);
+        fd = open("/dev/hidraw0", O_RDWR);
         if (fd < 0)
         {
             perror("hidg open");
@@ -312,7 +312,7 @@ int authenticator_read_state(AuthenticatorState * state)
         return 1;
     else
         return 0;
-    
+
 }
 
 
