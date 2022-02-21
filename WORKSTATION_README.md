@@ -14,7 +14,6 @@ This project is based on solokey. Even though it is technically cross-platform, 
 ```
 // install dependencies
 sudo apt install libsodium-dev
-brew install libsodium
 
 // Build the solo key program
 git clone https://github.com/solokeys/solo.git
@@ -23,10 +22,50 @@ make update
 make all
 ```
 
+# Configure USB integration - In Progress
+```
+// Register solo as a USB device
+cd solo/udev
+sudo mkdir /etc/udev/rules.d
+make setup
+```
+
 To run the program so that the browser can detect the FIDO2 device:
-```buildoutcfg
+```
 ./main -b hidg
 ```
+
+### Troubleshooting
+Right now `make setup` fails to install `gadgetfs`.
+Looking at https://www.duboucher.eu/gadgetfs-ubuntu.html
+
+
+The problem in the Makefile is:
+```
+dummy_hcd.c: /usr/src/linux-source-$(SVERSION)/linux-source-$(SVERSION).tar.bz2
+tar -xjvf $^ linux-source-$(SVERSION)/drivers/usb/gadget/udc/dummy_hcd.c &&\
+    cp linux-source-$(SVERSION)/drivers/usb/gadget/udc/dummy_hcd.c $@
+```
+Get an error that cannot build dependency `/usr/src/linux-source-$(SVERSION)/linux-source-$(SVERSION).tar.bz2`
+This source file does not exist in the system.
+
+There appear to be two options
+1. https://blog.soutade.fr/post/2016/07/create-your-own-usb-gadget-with-gadgetfs.html
+which shows how to automatically install GadgetFS on Linux.
+2.https://askubuntu.com/questions/1268618/trying-to-build-mariadb-i-get-the-error-you-must-put-some-deb-src-uris-in-yo
+this requires fiddling with low level configuration files and running lots of scripts.
+https://askubuntu.com/questions/795668/adding-source-uris
+
+
+This
+```
+sudo apt-get install aptitude
+sudo aptitude install dkms
+
+
+```
+
+
 
 ### Mac
 The Mac can only talk to the FIDO2 device over UDP. This means you cannot test it in the browser.
@@ -40,11 +79,6 @@ git clone https://github.com/solokeys/solo.git
 cd solo
 make update
 make all
-
-// Register solo as a USB device
-cd solo/udev
-sudo mkdir /etc/udev/rules.d
-make setup
 ```
 
 To run the program:
