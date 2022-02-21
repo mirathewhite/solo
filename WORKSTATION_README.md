@@ -25,9 +25,16 @@ make all
 # Configure USB integration - In Progress
 ```
 // Register solo as a USB device
-cd solo/udev
+cd udev
 sudo mkdir /etc/udev/rules.d
 make setup
+cd ..
+```
+You will need to enter your password.
+
+```
+cd tools/gadgetfs
+make all
 ```
 
 To run the program so that the browser can detect the FIDO2 device:
@@ -36,7 +43,7 @@ To run the program so that the browser can detect the FIDO2 device:
 ```
 
 ### Troubleshooting
-Right now `make setup` fails to install `gadgetfs`.
+Right now `make` fails to install `gadgetfs`.
 Looking at https://www.duboucher.eu/gadgetfs-ubuntu.html
 
 
@@ -57,7 +64,7 @@ this requires fiddling with low level configuration files and running lots of sc
 https://askubuntu.com/questions/795668/adding-source-uris
 
 
-This installs some package managers 
+This installs some package managers
 ```
 sudo apt-get install aptitude
 sudo aptitude install dkms

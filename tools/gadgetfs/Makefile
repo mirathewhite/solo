@@ -53,7 +53,13 @@ uninstall:
 dummy_hcd.ko: dummy_hcd.c
 	$(MAKE) -C /lib/modules/$(KERNEL_FULL_VERSION)/build M=$(TOP) modules
 
-dummy_hcd.c: /usr/src/linux-source-$(KERNEL_VERSION).tar.bz2
+dummy_hcd.c:
+    wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.8.tar.xz
+	tar -xvf $^ linux-5.8/drivers/usb/gadget/udc/dummy_hcd.c
+	cp linux-source-5.8/drivers/usb/gadget/udc/dummy_hcd.c $@
+
+
+dummy_hcd.c-OLD: /usr/src/linux-source-$(KERNEL_VERSION).tar.bz2
 	tar -xvf $^ linux-source-$(KERNEL_VERSION)/drivers/usb/gadget/udc/dummy_hcd.c
 	cp linux-source-$(KERNEL_VERSION)/drivers/usb/gadget/udc/dummy_hcd.c $@
 
